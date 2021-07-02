@@ -342,8 +342,8 @@ COPY test/streamingtest2.js "$JANUS_DEMO_PATH"/streamingtest2.js
 COPY test/streamingtest2.js "$JANUS_DEMO_PATH"/streamingtest3.js
 
 ENV STREAM_PATH /usr/local/share/stream
-RUN mkdir -p "$STREAM_PATH" && mkdir -p "$STREAM_PATH"/html && mkdir -p "$STREAM_PATH"/hls
-COPY stream/html/player.html "$STREAM_PATH"/html/player.html 
+RUN mkdir -p "$STREAM_PATH" && mkdir -p "$STREAM_PATH"/videos
+COPY stream/videos/test.mp4 "$STREAM_PATH"/videos/test.mp4
 
 ENV NVM_VERSION v0.35.3
 ENV NODE_VERSION v12.18.3

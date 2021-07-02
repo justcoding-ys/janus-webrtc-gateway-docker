@@ -31,3 +31,6 @@ run-mac:
 
 run-hide: 
 	@docker run --net=host --name="janus" -it -t $(USER_NAME)/$(TEMPLATE_NAME) >> /dev/null
+
+stream:
+	ffmpeg -re -stream_loop -1 -i ./test.mp4 -vcodec libx264 -vb 1500k -minrate 1500k -maxrate 1500k -bufsize 1500k -s 858x480 -g 60 -tune zerolatency -bf 0 -profile:v baseline -an -f rtp rtp://15.165.13.82:8004?pkt_size=1300 -vn -acodec libopus -ab 128k -ac 2 -ar 48000 -f rtp rtp://15.165.13.82:8002?pkt_size=1300
