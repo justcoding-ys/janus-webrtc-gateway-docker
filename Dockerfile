@@ -317,8 +317,33 @@ RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus
     --enable-all-handlers && \
     make && make install && make configs && ldconfig
 
-COPY nginx.conf /usr/local/nginx/nginx.conf
+COPY conf/nginx.conf /usr/local/nginx/nginx.conf
+COPY conf/janus.jcfg /usr/local/etc/janus/janus.jcfg
+COPY conf/janus.plugin.streaming.jcfg /usr/local/etc/janus/janus.plugin.streaming.jcfg
+COPY conf/janus.transport.http.jcfg /usr/local/etc/janus/janus.transport.http.jcfg
+COPY conf/janus.plugin.videoroom.jcfg /usr/local/etc/janus/janus.plugin.videoroom.jcfg
 
+COPY ssl /usr/local/share/ssl
+
+ENV JANUS_DEMO_PATH /usr/local/share/janus/demos
+COPY test/echotest.js "$JANUS_DEMO_PATH"/echotest.js
+COPY test/audiobridgetest.js "$JANUS_DEMO_PATH"/audiobridgetest.js
+COPY test/devicetest.js "$JANUS_DEMO_PATH"/devicetest.js
+COPY test/e2etest.js "$JANUS_DEMO_PATH"/e2etest.js
+COPY test/screensharingtest.js "$JANUS_DEMO_PATH"/screensharingtest.js
+COPY test/streamingtest.js "$JANUS_DEMO_PATH"/streamingtest.js
+COPY test/textroomtest.js "$JANUS_DEMO_PATH"/textroomtest.js
+COPY test/videocalltest.js "$JANUS_DEMO_PATH"/videocalltest.js
+COPY test/videoroomtest.js "$JANUS_DEMO_PATH"/videoroomtest.js
+COPY test/demos.html "$JANUS_DEMO_PATH"/demos.html
+COPY test/janus2.js "$JANUS_DEMO_PATH"/janus2.js
+COPY test/streamingtest2.html "$JANUS_DEMO_PATH"/streamingtest2.html
+COPY test/streamingtest2.js "$JANUS_DEMO_PATH"/streamingtest2.js
+COPY test/streamingtest2.js "$JANUS_DEMO_PATH"/streamingtest3.js
+
+ENV STREAM_PATH /usr/local/share/stream
+RUN mkdir -p "$STREAM_PATH" && mkdir -p "$STREAM_PATH"/html && mkdir -p "$STREAM_PATH"/hls
+COPY stream/html/player.html "$STREAM_PATH"/html/player.html 
 
 ENV NVM_VERSION v0.35.3
 ENV NODE_VERSION v12.18.3
@@ -339,7 +364,7 @@ SHELL ["/bin/bash", "-l", "-euxo", "pipefail", "-c"]
 RUN node -v
 RUN npm -v
 
-
+CMD sh /usr/local/share/janus/streams/test_gstreamer_1.sh
 
 CMD nginx && janus
 
